@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./brydom-bank.db"
+}
+
+model Usuario {
+  id        Int         @id @default(autoincrement())
+  cpf       String      @unique
+  senha     String
+  saldo     Float       @default(0)
+  tipo      String      @default("cliente")
+  historico Historico[]
+}
+
+model Historico {
+  id         Int      @id @default(autoincrement())
+  data       DateTime @default(now())
+  tipo       String
+  valor      Float
+  usuarioCpf String
+  usuario    Usuario  @relation(fields: [usuarioCpf], references: [cpf])
+}
